@@ -3,6 +3,7 @@
 import os
 import dotenv
 import unms
+from apscheduler.schedulers.background import BackgroundScheduler
 from influxdb import InfluxDBClient
 
 dotenv.load_dotenv()
@@ -48,8 +49,7 @@ def translate(device, stats):
             })
     return influxData
 
-def main():
-    # do something here
+def store_data():
     unmsClient = unms.Client(os.getenv("UNMS_ADDRESS"), os.getenv("UNMS_VERSION"))
     unmsClient.authenticate(os.getenv("UNMS_USERNAME"), os.getenv("UNMS_PASSWORD"))
     devices = unmsClient.getDevices()
@@ -62,8 +62,13 @@ def main():
     influxDBClient = InfluxDBClient(os.getenv("INFLUXDB_ADDRESS"), os.getenv("INFLUXDB_PORT"), os.getenv("INFLUXDB_USERNAME"), os.getenv("INFLUXDB_PASSWORD"), os.getenv("INFLUXDB_DATABASE"))
     influxDBClient.write_points(influxData)
 
-    # while True:
-    #     pass
+def main():
+    scheduler = BackgroundScheduler()
+    scheduler.start()
+    job = scheduler.add_job(store_data, 'interval', minutes=20)
+
+    while True:
+        pass
 
 if __name__ == '__main__':
     try:
