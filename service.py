@@ -25,7 +25,7 @@ def translate(device, stats):
                     "mac": deviceMAC,
                     "dir": "rx"
                 },
-                "time": timestamp * 1000000,
+                "time": timestamp * 1000000, # must be in nanoseconds
                 "fields": {
                     "value": value
                 }
@@ -41,7 +41,7 @@ def translate(device, stats):
                     "mac": deviceMAC,
                     "dir": "tx"
                 },
-                "time": timestamp * 1000000,
+                "time": timestamp * 1000000, # must be in nanoseconds
                 "fields": {
                     "value": value
                 }
