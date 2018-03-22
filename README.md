@@ -26,3 +26,5 @@ When Done
 
 Running
 1. `nohup python3 service.py &`
+or
+1. `docker-compose up -d`

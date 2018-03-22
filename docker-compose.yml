@@ -1,0 +1,6 @@
+version: "3"
+services:
+  station:
+    build: ./
+    image: station-monitor
+    env_file: ".env"

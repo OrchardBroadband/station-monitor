@@ -8,6 +8,9 @@ from influxdb import InfluxDBClient
 
 dotenv.load_dotenv()
 
+print("Getting info from:")
+print(os.getenv("UNMS_ADDRESS"))
+
 def translate(device, stats):
     influxData = []
     deviceName = device['identification']['name']
