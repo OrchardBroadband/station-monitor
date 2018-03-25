@@ -1,6 +1,6 @@
 FROM python:3
 
-WORKDIR /usr/src/app
+WORKDIR /usr/local/bin
 
 COPY requirements.txt ./
 
@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "./service.py" ]
+CMD [ "python", "-u", "./service.py" ]
