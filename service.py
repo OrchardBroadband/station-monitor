@@ -66,6 +66,7 @@ def store_data():
     influxDBClient.write_points(influxData)
 
 def main():
+    store_data()
     scheduler = BackgroundScheduler()
     scheduler.start()
     job = scheduler.add_job(store_data, 'interval', minutes=20)
