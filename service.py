@@ -53,6 +53,7 @@ def translate(device, stats):
     return influxData
 
 def store_data():
+    print("Retrieving Data")
     unmsClient = unms.Client(os.getenv("UNMS_ADDRESS"), os.getenv("UNMS_VERSION"))
     unmsClient.authenticate(os.getenv("UNMS_USERNAME"), os.getenv("UNMS_PASSWORD"))
     devices = unmsClient.getDevices()
@@ -60,10 +61,16 @@ def store_data():
     for device in devices:
         if device['identification']['type'] == 'airMax' :
             stats = unmsClient.getDeviceStats(device['identification']['id'])
+            print(stats)
             influxData += translate(device, stats)
 
+    print("Writing Data")
+    print(influxData)
     influxDBClient = InfluxDBClient(os.getenv("INFLUXDB_ADDRESS"), os.getenv("INFLUXDB_PORT"), os.getenv("INFLUXDB_USERNAME"), os.getenv("INFLUXDB_PASSWORD"), os.getenv("INFLUXDB_DATABASE"))
-    influxDBClient.write_points(influxData)
+    if influxDBClient.write_points(influxData):
+        print("Data written")
+    else:
+        print("Error writing data")
 
 def main():
     store_data()
